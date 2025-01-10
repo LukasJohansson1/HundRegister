@@ -16,6 +16,9 @@ public class DogCollection {
         return true;
     }
 
+    public int size() {
+    return dogs.size();  // Här antar vi att "dogs" är en ArrayList<Dog>
+}
     // Tar bort en hund baserat på namn
 
     public boolean removeDog(String name) {
@@ -32,6 +35,7 @@ public class DogCollection {
 
         return false; 
     }
+
 
 
     // Tar bort en hund baserat på objekt
