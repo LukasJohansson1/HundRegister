@@ -127,14 +127,10 @@ public class OwnerCollection {
 
     // Utökar arrayens kapacitet
     private void expandArray() {
-        int newCapacity = owners.length * 2; // Dubbla kapaciteten
+        int newCapacity = owners.length + 1; // öka kapaciteten
         Owner[] newArray = new Owner[newCapacity];
         System.arraycopy(owners, 0, newArray, 0, owners.length); // Kopiera gamla arrayen
         owners = newArray;
     }
 
-
-    public int size() {
-        return size;
-    }
 }

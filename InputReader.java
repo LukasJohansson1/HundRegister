@@ -15,7 +15,7 @@ public class InputReader {
     public InputReader(InputStream inputStream) {
         // Kontrollera om strömmen redan är i användning
         if (usedStreams.getOrDefault(inputStream, false)) {
-            throw new IllegalStateException("Denna InputStream används redan.");
+            throw new IllegalStateException("Fel: Denna InputStream används redan.");
         }
 
         this.scanner = new Scanner(inputStream); // Initiera Scanner med strömmen

@@ -1,11 +1,15 @@
 //Lukas Johansson lujo0128
 public class Dog {
+
+    private static final double DACHSHUND_TAIL_LENGTH = 3.7;
+    private static final double TAIL_LENGTH_DIVISOR = 10;
+
     private final String name;
     private final String breed;
     private final int weight;
     private int age;
     private Owner owner;
-    private final double dachshundTailLength = 3.7;
+
 
     // Konstruktor som tar emot hundens namn, ras, ålder och vikt.
     public Dog(String name, String breed, int age, int weight){
@@ -46,9 +50,9 @@ public class Dog {
     // Beräknar hundens svanslängd beroende på ras och andra faktorer.
     public double getTailLength(){
         if (breed.equalsIgnoreCase("tax") || breed.equalsIgnoreCase("dachshund")) {
-            return dachshundTailLength; // Specifik svanslängd för taxar.
+            return DACHSHUND_TAIL_LENGTH; // Specifik svanslängd för taxar.
         }
-        return (age * weight) / 10.0; // För andra raser beräknas längden baserat på ålder och vikt.
+        return (age * weight) / TAIL_LENGTH_DIVISOR; // För andra raser beräknas längden baserat på ålder och vikt.
     }
 
     // Ökar hundens ålder med ett år, om möjligt.

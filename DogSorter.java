@@ -15,7 +15,7 @@ public class DogSorter {
         dogs.set(indexTwo, temp);
     }
 
-    private static int nextDog(Comparator<Dog> comparator, ArrayList<Dog> dogs, int startIndex) {
+    private static int pickNextDog(Comparator<Dog> comparator, ArrayList<Dog> dogs, int startIndex) {
         if (comparator == null || dogs == null || startIndex < 0 || startIndex >= dogs.size()) {
             throw new IllegalArgumentException("Ogiltiga argument");
         }
@@ -31,12 +31,12 @@ public class DogSorter {
 
     public static int sortDogs(Comparator<Dog> comparator, ArrayList<Dog> dogs) {
         if (comparator == null || dogs == null) {
-            throw new IllegalArgumentException("Comparator eller lista är null");
+            throw new IllegalArgumentException("Fel: Comparator eller lista är null");
         } 
         int swapCount = 0;
 
         for(int i = 0; i < dogs.size(); i++) {
-            int bestIndex = nextDog(comparator, dogs, i); // Hitta indexet för det "bästa" (minsta/största beroende på comparator) elementet
+            int bestIndex = pickNextDog(comparator, dogs, i); // Hitta indexet för det "bästa" (minsta/största beroende på comparator) elementet
 
             if(bestIndex != i) {
                 swapDogs(dogs, i, bestIndex);

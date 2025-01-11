@@ -69,28 +69,25 @@ public class DogCollection {
 
     public ArrayList<Dog> getDogs() {
         ArrayList<Dog> sortedDogs = new ArrayList<>(dogs);
-        DogSorter.sortDogs((d1, d2) -> d1.getName().compareTo(d2.getName()), sortedDogs);
+        DogSorter.sortDogs((dog1, dog2) -> dog1.getName().compareTo(dog2.getName()), sortedDogs);
         return sortedDogs;
     }
     
 
     // Hämtar alla hundar som har en svans längre än en viss längd
-    public ArrayList<Dog> getDogsByTail(double length) {
+    public ArrayList<Dog> getDogsWithMinTailLength(double length) {
+        // Filtrera hundar med svanslängd större eller lika med det angivna längdet.
         ArrayList<Dog> result = new ArrayList<>();
         for (Dog dog : dogs) {
             if (dog.getTailLength() >= length) {
                 result.add(dog);
             }
         }
-
-        // Sortera baserat på svanslängd och namn om svansen är lika lång
-        DogSorter.sortDogs((d1, d2) -> {
-            if (Double.compare(d1.getTailLength(), d2.getTailLength()) == 0) {
-                return d1.getName().compareTo(d2.getName()); // Om svanslängderna är lika, sortera på namn
-            }
-            return Double.compare(d1.getTailLength(), d2.getTailLength()); // Sortera på svanslängd annars
-        }, result);
-        
+    
+        // Använd DogTailComparator för att sortera resultatlistan.
+        DogSorter.sortDogs(new DogTailNameComparator(), result);
+    
         return result;
     }
+    
 }

@@ -3,11 +3,29 @@ import java.util.*;
 
 public class DogRegister {
 
+    private static final String REGISTER_NEW_OWNER = "register new owner";
+    private static final String REMOVE_OWNER = "remove owner";
+    private static final String REGISTER_NEW_DOG = "register new dog";
+    private static final String REMOVE_DOG = "remove dog";
+    private static final String LIST_DOGS = "list dogs";
+    private static final String LIST_OWNERS = "list owners";
+    private static final String INCREASE_AGE = "increase age";
+    private static final String GIVE_DOG_TO_OWNER = "give dog to owner";
+    private static final String REMOVE_DOG_FROM_OWNER = "remove dog from owner";
+    private static final String EXIT = "exit";
+    private static final String SHOW_VALID_COMMANDS = "show valid commands";
+
+    private static final Set<String> VALID_COMMANDS = Set.of(
+        REGISTER_NEW_OWNER, REMOVE_OWNER, REGISTER_NEW_DOG, REMOVE_DOG,
+        LIST_DOGS, LIST_OWNERS, INCREASE_AGE, GIVE_DOG_TO_OWNER,
+        REMOVE_DOG_FROM_OWNER, EXIT, SHOW_VALID_COMMANDS
+    );
+
     private InputReader inputReader;
     private DogCollection dogCollection;
     private OwnerCollection ownerCollection;
 
-    public DogRegister(InputReader inputReader) {
+    private DogRegister(InputReader inputReader) {
         this.inputReader = inputReader;
         this.dogCollection = new DogCollection();
         this.ownerCollection = new OwnerCollection();
@@ -32,30 +50,37 @@ public class DogRegister {
         return true;
     }
 
-private String getValidatedInput(String prompt, String errorMessage, String specificError) {
-    while (true) {
-        String input = inputReader.readString(prompt);
-        if (isInputEmpty(input)) {
-            System.out.println(errorMessage);
-        } else if (dogCollection.getDog(input) != null && specificError != null) {
-            System.out.println(specificError);
-            return null;
-        } else {
-            return input;
+    private void showValidCommands() {
+        System.out.println("Giltiga kommandon:");
+        for (String command : VALID_COMMANDS) {
+            System.out.println("- " + command);
         }
     }
-}
 
-private int getValidatedNumber(String prompt, String errorMessage, int minValue) {
-    int input = inputReader.readInt(prompt);
-    if (input < minValue) {
-        System.out.println(errorMessage);
-        return -1;
+    private String getValidatedInput(String prompt, String errorMessage, String specificError) {
+        while (true) {
+            String input = inputReader.readString(prompt);
+            if (isInputEmpty(input)) {
+                System.out.println(errorMessage);
+            } else if (dogCollection.getDog(input) != null && specificError != null) {
+                System.out.println(specificError);
+                return null;
+            } else {
+                return input;
+            }
+        }
     }
-    return input;
-}
 
-    public void registerNewOwner() {
+    private int getValidatedNumber(String prompt, String errorMessage, int minValue) {
+        int input = inputReader.readInt(prompt);
+        if (input < minValue) {
+            System.out.println(errorMessage);
+            return -1;
+        }
+        return input;
+    }
+
+    private void registerNewOwner() {
         String ownerName;
         
         // Be om namn tills ett giltigt namn anges
@@ -81,7 +106,7 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     
     
     
-    public void removeOwner() {
+    private void removeOwner() {
         // Kontrollera om det finns några ägare i registret
         if (ownerCollection.getOwners().isEmpty()) {
             System.out.println("Fel: Inga ägare är registrerade.");
@@ -128,7 +153,7 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     
     
     
-    public void registerNewDog() {
+    private void registerNewDog() {
         String dogName = getValidatedInput("Ange hundens namn?", 
             "Fel: En tom eller blank sträng är inte tillåten, försök igen.", 
             "Fel: Hunden finns redan i registret.");
@@ -155,7 +180,7 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     
     
     
-    public void removeDog() {
+    private void removeDog() {
         // Kontrollera om det finns några hundar i registret
         if (dogCollection.getDogs().isEmpty()) {
             System.out.println("Fel: Inga hundar i registret");
@@ -183,7 +208,7 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     }
     
     
-    public void listDogs() {
+    private void listDogs() {
         // Kontrollera om det finns några hundar i registret
         if (dogCollection.getDogs().isEmpty()) {
             System.out.println("Fel: Inga hundar i registeret");
@@ -194,10 +219,10 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
         double minTailLength = inputReader.readDouble("Ange minsta svanslängd?");
     
         // Hämta alla hundar som har en svanslängd >= minTailLength
-        ArrayList<Dog> dogsWithMinTail = dogCollection.getDogsByTail(minTailLength);
+        ArrayList<Dog> dogsWithMinTail = dogCollection.getDogsWithMinTailLength(minTailLength);
     
         if (dogsWithMinTail.isEmpty()) {
-            System.out.println("Inga hundar matchar den angivna svanslängden.");
+            System.out.println("Fel: Inga hundar matchar den angivna svanslängden."); //
             return;
         }
     
@@ -215,9 +240,9 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     
     
     
-    public void listOwners() {
+    private void listOwners() {
         // Kontrollera om det finns några ägare
-        if (ownerCollection.size() == 0) {
+        if (ownerCollection.getOwners().size() == 0) {
             System.out.println("Fel: Inga owners i registret");
             return;
         }
@@ -245,7 +270,7 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     
     
     
-    public void increaseAge() {
+    private void increaseAge() {
         // Kontrollera om det finns några hundar i registret
         if (dogCollection.size() == 0) {
             System.out.println("Fel: Inga hundar finns i registret");
@@ -272,7 +297,7 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     }
     
     
-    public void giveDogToOwner() {
+    private void giveDogToOwner() {
 
         if (!checkCollectionsForDogAndOwner()) return;
         String dogName = inputReader.readString("Ange namnet på hunden som ska ges till en ägare");
@@ -305,7 +330,7 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     }
     
     
-    public void removeDogFromOwner() {
+    private void removeDogFromOwner() {
 
         if (dogCollection.size() == 0) {
             System.out.println("Fel: Inga hundar registrerade");
@@ -347,11 +372,12 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
     
     
 
-    public void mainMenu() {
+    private void mainMenu() {
         System.out.println("Välkommen till Hundregistret!");
     
         while (true) {
-            String command = inputReader.readString("Ange kommando (register new owner, remove owner, register new dog, remove dog, list dogs, list owners, increase age, give dog to owner, remove dog from owner, exit)").toLowerCase().trim();
+            String command = inputReader.readString("Ange kommando ('show valid commands' för att se alla giltiga kommandon)"
+            ).toLowerCase().trim();
     
             if (command.isEmpty()) {
                 System.out.println("Input får inte vara tomt");
@@ -359,34 +385,37 @@ private int getValidatedNumber(String prompt, String errorMessage, int minValue)
             }
         
             switch (command) {
-                case "register new owner":
-                    registerNewOwner();
-                    break;
-                case "remove owner":
-                    removeOwner();
-                    break;
-                case "register new dog":
-                    registerNewDog();
-                    break;
-                case "remove dog":
-                    removeDog();
-                    break;
-                case "list dogs":
-                    listDogs();
-                    break;
-                case "list owners":
-                    listOwners();
-                    break;
-                case "increase age":
-                    increaseAge();
-                    break;
-                case "give dog to owner":
-                    giveDogToOwner();
-                    break;
-                case "remove dog from owner":
-                    removeDogFromOwner();
-                    break;
-                case "exit":
+            case REGISTER_NEW_OWNER:
+                registerNewOwner();
+                break;
+            case REMOVE_OWNER:
+                removeOwner();
+                break;
+            case REGISTER_NEW_DOG:
+                registerNewDog();
+                break;
+            case REMOVE_DOG:
+                removeDog();
+                break;
+            case LIST_DOGS:
+                listDogs();
+                break;
+            case LIST_OWNERS:
+                listOwners();
+                break;
+            case INCREASE_AGE:
+                increaseAge();
+                break;
+            case GIVE_DOG_TO_OWNER:
+                giveDogToOwner();
+                break;
+            case REMOVE_DOG_FROM_OWNER:
+                removeDogFromOwner();
+                break;
+            case SHOW_VALID_COMMANDS:
+                showValidCommands();
+                break;
+            case EXIT:
                     System.out.println("Avslutar programmet. Hej då!");
                     return;
                 default:
