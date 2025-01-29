@@ -41,7 +41,7 @@ public class Owner implements Comparable<Owner> {
     }
 
     private void sortDogs() {
-        Collections.sort(dogs, (d1, d2) -> d1.getName().compareTo(d2.getName()));
+        Collections.sort(dogs, new DogNameComparator());
     }
 
     @Override

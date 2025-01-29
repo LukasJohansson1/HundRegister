@@ -32,21 +32,11 @@ public class OwnerCollection {
     // Tar bort en ägare baserat på namn
     public boolean removeOwner(String name) {
         for (int i = 0; i < size; i++) {
-
             if (owners[i].getName().equals(name)) {
-                // Kontrollera om ägaren har hundar, om ja, kan inte tas bort
-                if (!owners[i].getDogs().isEmpty()) {
-                    return false; 
-                }
-                // Ta bort ägaren om den inte har några hundar
-                owners[i] = owners[size - 1]; // Flytta sista ägaren till den tomma platsen
-                owners[size - 1] = null; // Rensa sista platsen
-                size--; 
-                sortOwners(); 
-                return true;
+                return removeOwner(owners[i]); // Anropar den andra metoden
             }
         }
-        return false; 
+        return false;
     }
     
 

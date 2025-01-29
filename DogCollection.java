@@ -17,7 +17,7 @@ public class DogCollection {
     }
 
     public int size() {
-    return dogs.size();  // Här antar vi att "dogs" är en ArrayList<Dog>
+    return dogs.size();  
 }
     // Tar bort en hund baserat på namn
 
